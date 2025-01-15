@@ -9,13 +9,25 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "infoPlist": {
+        "NSUserTrackingUsageDescription": "[REASON]",
+        "NSRemindersFullAccessUsageDescription": "[REASON]",
+        "NSMotionUsageDescription": "[REASON]",
+        "NSLocationWhenInUseUsageDescription": "[REASON]",
+        "NSCalendarsFullAccessUsageDescription": "[REASON]",
+        "NSBluetoothPeripheralUsageDescription": "[REASON]",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "[REASON]",
+        "NSBluetoothAlwaysUsageDescription": "[REASON]"
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -32,10 +44,38 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "react-native-permissions",
+        {
+          "iosPermissions": [
+            "Bluetooth",
+            "LocationAccuracy",
+            "LocationAlways",
+            "LocationWhenInUse",
+            "Motion",
+            "Reminders"
+          ]
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c993ab15-ed51-44e3-85ef-3552af6ec591"
+      }
     }
   }
 }
