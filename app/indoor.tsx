@@ -3,89 +3,12 @@ import {Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Button, Imag
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
+// const API_URL_UPLOAD = "http://92.255.111.193:5000/upload"
 const API_URL_UPLOAD = "http://192.168.0.28:5000/upload"
 
 const getValue = async (key: string) => {
   return await SecureStore.getItemAsync(key) 
 }
-
-// class Indoor extends React.Component<{}, { modalVisible: boolean, to: string, photo: string}> {
-//   constructor(props: any) {
-//     super(props)
-//     this.state = {
-//       modalVisible: false,
-//       to: '',
-//       photo: '',
-//     }
-
-//     this.handleInputChange = this.handleInputChange.bind(this)
-//     this.handleSubmit = this.handleSubmit.bind(this)
-//   }
-
-//   handleInputChange = (input: any) => {
-//     this.setState({to: input})
-//   }
-
-
-//   handleSubmit = async () => {
-//     this.setState({modalVisible: !this.state.modalVisible})
-
-//     console.log("Update")
-
-//     var sendData = {
-//       "coordinates": {
-//         "latitude": await getValue('latitude'),
-//         "longitude": await getValue('longitude')
-//       },
-//       "start_room_name": "user",
-//       "end_room_name": this.state.to
-//     }
-
-//     const response = await axios.post(API_URL_UPLOAD, sendData);
-
-//     this.setState({to: ""})
-//   }
-
-
-//   render(): React.ReactNode {
-//     return (
-//       <View style={styles.centeredView}>
-//       <Modal
-//         animationType="slide"
-//         transparent={true}
-//         visible={this.state.modalVisible}
-//         onRequestClose={() => {
-//           Alert.alert('Modal has been closed.');
-//           this.setState({modalVisible: !this.state.modalVisible});
-//         }}>
-//         <View style={styles.centeredView}>
-//           <View style={styles.modalView}>
-//             <TextInput style={styles.modalInput}
-//                       placeholderTextColor="#2F4F4F" 
-//                       placeholder='Куда?'
-//                       onChangeText={this.handleInputChange}
-//                       value={this.state.to} />
-//             <Pressable
-//               style={[styles.button, styles.buttonClose]}
-//               onPress={this.handleSubmit}>
-//               <Text style={styles.textStyle}>Contunue </Text>
-//             </Pressable>
-//           </View>
-//         </View>
-//       </Modal>
-//       <Image
-//           style={styles.image}
-//           src={this.state.photo}
-//       />
-  
-//       <Pressable
-//         style={[styles.button, styles.buttonOpen]}
-//         onPress={() => this.setState({modalVisible: true})}>
-//         <Text style={styles.buttonText}>Открыть меню</Text>
-//       </Pressable>
-//     </View>
-//     )
-//   }
 
 
 const Indoor = () => {
@@ -94,6 +17,10 @@ const Indoor = () => {
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [url, setUrl] = useState<string>("http://192.168.0.28:5000/photo1");
+
+  const [level, setLevel] = useState<boolean>();
+  const [number, setNumber] = useState<string>();
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -102,7 +29,7 @@ const Indoor = () => {
       try {
         const timestamp = Date.now();
         const response = await fetch(
-          `http://192.168.0.28:5000/photo1?t=${timestamp}`
+          `${url}?t=${timestamp}`
         );
         
         if (!response.ok) {
@@ -153,6 +80,18 @@ const Indoor = () => {
 
     const response = await axios.post(API_URL_UPLOAD, sendData);
 
+    if(response.data.message[0] == response.data.message[1]) {
+      setLevel(false)
+      setNumber("1");
+    } else {
+      setLevel(true)
+      setNumber("2");
+    }
+
+    // console.log(response.data.message[0]);
+
+    // setLevel([response.data.message[0], response.data.message[1]])
+
     setTo("")
   };
 
@@ -191,6 +130,10 @@ const Indoor = () => {
       ) : (
         <Text>Загрузка первого изображения...</Text>
       )}
+
+      {
+        level ? <Button title='hui' onPress={() => setUrl(`http://192.168.0.28:5000/photo${number}`)} /> : <></>
+      }
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}>
@@ -258,7 +201,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '80%',
+    height: '60%',
     resizeMode: 'contain',
     // marginBottom: 20,
   },
