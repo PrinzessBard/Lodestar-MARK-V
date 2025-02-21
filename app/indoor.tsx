@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Button, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Button, Image, TouchableOpacity, ImageSourcePropType, ImageBackground } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
+import FastImage from 'react-native-fast-image';
 
 // const API_URL_UPLOAD = "http://92.255.111.193:5000/upload"
 const API_URL_UPLOAD = "http://192.168.0.28:5000/upload";
@@ -123,6 +124,7 @@ const Indoor = () => {
       ) : imageSource ? (
         <Image
           source={imageSource}
+          key={imageUri}
           style={styles.image}
         />
       ) : (
@@ -132,10 +134,10 @@ const Indoor = () => {
       {/* Новая кнопка для изменения URL */}
       {
         level ? <Pressable
-        style={[styles.button, styles.buttonChangeUrl]}
-        onPress={changeUrl}>
-        <Text style={styles.buttonText}>Сменить фото</Text>
-      </Pressable> : <></>
+          style={[styles.button, styles.buttonChangeUrl]}
+          onPress={changeUrl}>
+          <Text style={styles.buttonText}>Сменить фото</Text>
+        </Pressable> : <></>
       }
 
       <Pressable

@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "app",
-    "slug": "app",
+    "slug": "lodestar",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "infoPlist": {
         "NSUserTrackingUsageDescription": "[REASON]",
@@ -21,13 +21,15 @@
       },
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.princessbard.lodestar"
     },
     "android": {
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
-      ]
+      ],
+      "package": "com.princessbard.lodestar"
     },
     "web": {
       "bundler": "metro",
@@ -74,8 +76,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "c993ab15-ed51-44e3-85ef-3552af6ec591"
+        "projectId": "ff6ce038-cd97-4d10-8437-df8d67c4e21c"
       }
-    }
+    },
+    "owner": "princessbard"
   }
 }
