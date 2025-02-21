@@ -16,6 +16,7 @@ const Indoor = () => {
   const [to, setTo] = useState('');
 
   const [imageUri, setImageUri] = useState<string | null>(null);
+  const [old, setOld] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [url, setUrl] = useState<string>("http://192.168.0.28:5000/photo1");
 
@@ -24,6 +25,7 @@ const Indoor = () => {
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
+    let interval: NodeJS.Timeout;
 
     const fetchImage = async (): Promise<void> => {
       try {
@@ -35,6 +37,14 @@ const Indoor = () => {
         }
 
         setImageUri(response.url);
+
+        function setOldFunv() {setOld(response.url)}
+        // if(imageUri != old) {
+        //   setOld(response.url);
+        // }
+        interval = setTimeout(() => {
+          setOld(response.url); // увеличиваем счетчик на 1 каждую секунду
+        }, 1000);
         setError(null);
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error';
@@ -46,18 +56,23 @@ const Indoor = () => {
     fetchImage();
 
     // Устанавливаем интервал для повторных запросов
-    intervalId = setInterval(fetchImage, 2000);
+    intervalId = setInterval(fetchImage, 5000);
 
     // Очистка интервала при размонтировании компонента
     return () => {
       if (intervalId) {
         clearInterval(intervalId);
+        clearTimeout(interval)
       }
     };
   }, [url]); // Зависимость от url, чтобы эффект перезапускался при изменении url
 
   const imageSource: ImageSourcePropType | undefined = imageUri
     ? { uri: imageUri }
+    : undefined;
+
+  const imageSourceOld: ImageSourcePropType | undefined = old
+    ? { uri: old }
     : undefined;
 
   const handleInputChange = (input: any) => {
@@ -119,17 +134,33 @@ const Indoor = () => {
           </View>
         </View>
       </Modal>
-      {error ? (
+      {/* <View style={styles.container} >
+        <Image
+            source={imageSourceOld}
+            style={styles.image1}
+          />
+        <Image
+          source={imageSource}
+          style={styles.image2}
+        />
+      </View> */}
+      {/* {error ? (
         <Text>Ошибка: {error}</Text>
-      ) : imageSource ? (
+      ) : imageSource ? ( */}
+      <View style={styles.container} >
+        <Image
+          source={imageSourceOld}
+          style={styles.image2}
+        />
         <Image
           source={imageSource}
           key={imageUri}
-          style={styles.image}
+          style={styles.image1}
         />
-      ) : (
+      </View>
+      {/* ) : (
         <Text>Загрузка первого изображения...</Text>
-      )}
+      )} */}
 
       {/* Новая кнопка для изменения URL */}
       {
@@ -150,6 +181,11 @@ const Indoor = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '80%',
+    position: "relative"
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -208,10 +244,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: 'white'
   },
-  image: {
+  image1: {
     width: '100%',
     height: '60%',
     resizeMode: 'contain',
+  },
+  image2: {
+    width: '100%',
+    height: '60%',
+    resizeMode: 'contain',
+    position: "absolute",
+    top: 0,
+    left: 0,
   },
   buttonText: {
     color: 'white',
