@@ -38,10 +38,6 @@ const Indoor = () => {
 
         setImageUri(response.url);
 
-        function setOldFunv() {setOld(response.url)}
-        // if(imageUri != old) {
-        //   setOld(response.url);
-        // }
         interval = setTimeout(() => {
           setOld(response.url); // увеличиваем счетчик на 1 каждую секунду
         }, 1000);
@@ -134,19 +130,6 @@ const Indoor = () => {
           </View>
         </View>
       </Modal>
-      {/* <View style={styles.container} >
-        <Image
-            source={imageSourceOld}
-            style={styles.image1}
-          />
-        <Image
-          source={imageSource}
-          style={styles.image2}
-        />
-      </View> */}
-      {/* {error ? (
-        <Text>Ошибка: {error}</Text>
-      ) : imageSource ? ( */}
       <View style={styles.container} >
         <Image
           source={imageSourceOld}
@@ -158,16 +141,11 @@ const Indoor = () => {
           style={styles.image1}
         />
       </View>
-      {/* ) : (
-        <Text>Загрузка первого изображения...</Text>
-      )} */}
-
-      {/* Новая кнопка для изменения URL */}
       {
         level ? <Pressable
           style={[styles.button, styles.buttonChangeUrl]}
           onPress={changeUrl}>
-          <Text style={styles.buttonText}>Сменить фото</Text>
+          <Text style={styles.buttonText}>Сменить этаж</Text>
         </Pressable> : <></>
       }
 
@@ -183,7 +161,7 @@ const Indoor = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: '80%',
+    height: 500,
     position: "relative"
   },
   centeredView: {
@@ -213,15 +191,16 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: '#0000FF',
     borderRadius: 10,
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#0000FF',
   },
   buttonChangeUrl: {
-    backgroundColor: '#4CAF50', // Зеленый цвет для новой кнопки
-    marginTop: 10, // Отступ сверху
+    backgroundColor: '#E2A600', // Зеленый цвет для новой кнопки
+    borderRadius: 10,
+    marginBottom: 10
   },
   textStyle: {
     color: 'white',
@@ -246,12 +225,12 @@ const styles = StyleSheet.create({
   },
   image1: {
     width: '100%',
-    height: '60%',
+    height: '90%',
     resizeMode: 'contain',
   },
   image2: {
     width: '100%',
-    height: '60%',
+    height: '90%',
     resizeMode: 'contain',
     position: "absolute",
     top: 0,

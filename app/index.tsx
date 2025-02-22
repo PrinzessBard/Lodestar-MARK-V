@@ -11,9 +11,9 @@ export default function Index() {
       <Text style={styles.title}>Lodestar</Text>
       <View style={styles.buttonContainer}>
       <Link  href="/indoor" >
-        <View style={styles.button}>
+        <View style={[styles.button, styles.buttinIndoor]}>
           <Image
-            style={styles.buttonImageI} 
+            style={[styles.buttonImageI]} 
             source={require('@/assets/images/Indoor.png')}
           />
         </View>
@@ -62,12 +62,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'orange',
   },
+  buttinIndoor: {
+    backgroundColor: '#0000FF',
+  },
   buttonImage: {
     width: 60,
     height: 60,
   },
   buttonImageI: {
-    width: 110,
-    height: 110,
+    width: 80,
+    height: 80,
   },
 });

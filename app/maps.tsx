@@ -175,8 +175,8 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   map: { flex: 1 },
-  controls: { position: "absolute", top: 40, left: 10, right: 10, backgroundColor: "grey", padding: 10, borderRadius: 10 },
-  input: { height: 40, borderColor: "gray", borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 },
+  controls: { position: "absolute", top: 40, left: 10, right: 10, backgroundColor: "#201E28", padding: 10, borderRadius: 10 },
+  input: { height: 40, borderColor: "#E2A600",borderRadius: 10, borderWidth: 1, marginBottom: 10, paddingHorizontal: 10, color: "white" },
   linkContainer: {
     // flex: 1,
     backgroundColor: 'black',
