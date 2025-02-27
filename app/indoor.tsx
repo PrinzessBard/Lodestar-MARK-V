@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput, Button, Image, TouchableOpacity, ImageSourcePropType, ImageBackground } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
-import FastImage from 'react-native-fast-image';
+import { RadioButton } from 'react-native-paper';
 
 // const API_URL_UPLOAD = "http://92.255.111.193:5000/upload"
-const API_URL_UPLOAD = "http://192.168.0.28:5000/upload";
+const API_URL_UPLOAD = "http://172.20.10.7:9239/upload";
 
 const getValue = async (key: string) => {
   return await SecureStore.getItemAsync(key);
@@ -14,14 +14,17 @@ const getValue = async (key: string) => {
 const Indoor = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [to, setTo] = useState('');
+  const [from, setFrom] = useState('');
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [old, setOld] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [url, setUrl] = useState<string>("http://192.168.0.28:5000/photo1");
+  const [url, setUrl] = useState<string>("http://172.20.10.7:9239/photo1");
 
   const [level, setLevel] = useState<boolean>();
   const [number, setNumber] = useState<number>(1);
+  const [isBag, setIsBag] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -75,16 +78,23 @@ const Indoor = () => {
     setTo(input);
   };
 
+  const handleInputChange2 = (input: any) => {
+    setFrom(input);
+  };
+
   const handleSubmit = async () => {
     setModalVisible(!modalVisible);
 
     var sendData = {
       "coordinates": {
-        "latitude": await getValue('latitude'),
-        "longitude": await getValue('longitude')
+        "latitude": "56.81745",  //await getValue('latitude'),
+        "longitude": "60.63968" // await getValue('longitude')
       },
-      "start_room_name": "user",
-      "end_room_name": to
+      "start_room_name": from,
+      "end_room_name": to,
+      "iter_room_name": "",
+      "isBag": isBag,
+      "isDisabled": isDisabled
     };
 
     const response = await axios.post(API_URL_UPLOAD, sendData);
@@ -122,6 +132,27 @@ const Indoor = () => {
               placeholder='Куда?'
               onChangeText={handleInputChange}
               value={to} />
+            <TextInput style={styles.modalInput}
+              placeholderTextColor="#2F4F4F"
+              placeholder='Откуда?'
+              onChangeText={handleInputChange2}
+              value={from} />
+            <Text>IsBag</Text>
+            <RadioButton.Android
+              value="isBag"
+              status={isBag === true ? 
+                          "checked" : "unchecked"}
+              onPress={() => setIsBag(!isBag)}
+              color="#007BFF"
+                    />
+            <Text>IsDisabled</Text>
+            <RadioButton.Android
+              value="isDisabled"
+              status={isDisabled === true ? 
+                          "checked" : "unchecked"}
+              onPress={() => setIsDisabled(!isDisabled)}
+              color="#007BFF"
+                    />
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={handleSubmit}>
